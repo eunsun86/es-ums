@@ -190,8 +190,8 @@
     var cancelButtonEl = e.currentTarget.querySelector('button.cancel');
     cancelButtonEl.style.display = 'none';
 
-    var delButtonEl = e.currentTarget.querySelector('button.delete');
-    delButtonEl.style.display = 'none';   
+    var deleteButtonEl = e.currentTarget.querySelector('button.delete');
+    deleteButtonEl.style.display = 'none';   
 
     var closeButtonEl = e.currentTarget.querySelector('button.close');
     closeButtonEl.style.display = 'inline-block';
