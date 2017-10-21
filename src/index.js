@@ -22,7 +22,7 @@
       return;
     }
 
-    Array.prototype.forEach.call(e.target.parentElement.querySelectorAll('li'), function reset (el) {
+    Array.prototype.forEach.call(e.target.parentElement.querySelectorAll('li'), function resetNewUserSelected (el) {
       el.classList.remove('selected');
     });
 
@@ -36,7 +36,7 @@
       newUserFormEl.querySelector('button.submit').style.display = 'inline-block';
       newUserFormEl.querySelector('button.cancel').style.display = 'inline-block';
       newUserFormEl.querySelector('button.close').style.display = 'none';
-      Array.prototype.forEach.call(newUserFormEl.querySelectorAll('input'), function reset (el) {
+      Array.prototype.forEach.call(newUserFormEl.querySelectorAll('input'), function resetNewUserValue (el) {
         el.value = '';
       });
     }
@@ -49,7 +49,7 @@
       return;
     }
 
-    Array.prototype.forEach.call(e.target.parentElement.querySelectorAll('li'), function reset (el) {
+    Array.prototype.forEach.call(e.target.parentElement.querySelectorAll('li'), function resetExistingUserSelected (el) {
       el.classList.remove('selected');
     });
 
@@ -87,10 +87,10 @@
       e.currentTarget.querySelector('button.submit').style.display = 'inline-block';
       e.currentTarget.querySelector('button.cancel').style.display = 'inline-block';
       e.currentTarget.querySelector('button.close').style.display = 'none';
-      Array.prototype.forEach.call(e.currentTarget.querySelectorAll('input'), function reset (el) {
+      Array.prototype.forEach.call(e.currentTarget.querySelectorAll('input'), function resetNewUserFormValue (el) {
         el.value = '';
       });
-      Array.prototype.forEach.call(newUserSelectionEl.querySelectorAll('li'), function reset (el) {
+      Array.prototype.forEach.call(newUserSelectionEl.querySelectorAll('li'), function resetNewUserFormSelected (el) {
         el.classList.remove('selected');
       });
       return;
@@ -141,10 +141,10 @@
       e.currentTarget.querySelector('button.cancel').style.display = 'inline-block';
       e.currentTarget.querySelector('button.delete').style.display = 'inline-block';
       e.currentTarget.querySelector('button.close').style.display = 'none';
-      Array.prototype.forEach.call(e.currentTarget.querySelectorAll('input'), function reset (el) {
+      Array.prototype.forEach.call(e.currentTarget.querySelectorAll('input'), function resetUpdateUserFormValue (el) {
         el.value = '';
       });
-      Array.prototype.forEach.call(existingUserListEl.querySelectorAll('li'), function reset (el) {
+      Array.prototype.forEach.call(existingUserListEl.querySelectorAll('li'), function resetUpdateUserFormSelected (el) {
         el.classList.remove('selected');
       });
       return;
@@ -157,15 +157,20 @@
       e.currentTarget.querySelector('button.cancel').style.display = 'inline-block';
       e.currentTarget.querySelector('button.delete').style.display = 'inline-block';
       e.currentTarget.querySelector('button.close').style.display = 'none';
-      Array.prototype.forEach.call(e.currentTarget.querySelectorAll('input'), function reset (el) {
+      Array.prototype.forEach.call(e.currentTarget.querySelectorAll('input'), function resetDeleteValue (el) {
           el.value = '';
       });
-      Array.prototype.forEach.call(existingUserListEl.querySelectorAll('li'), function reset (el) {
+      Array.prototype.forEach.call(existingUserListEl.querySelectorAll('li'), function resetDeleteSelected (el) {
           el.classList.remove('selected');
       });
-      
+
+      var num = targetUser.id;
+      delete userCollection[num];
+
       var userdelEl = existingUserListEl.querySelector('[data-id="' + targetUser.id + '"]');
       userdelEl.style.display = 'none';
+
+      targetUser = null;
 
       return;
     } 
