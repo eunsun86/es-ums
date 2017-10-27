@@ -10,11 +10,12 @@
   };
   var userCollection = [];
   var userId = 0;
+  var userIdNum = 0;
   var targetUser = null;
 
   function View (selector) {
     this.element = document.querySelector(selector);
-  }
+  } 
 
   View.prototype.removeClass = function (className) {
     this.element.classList.remove(className);
@@ -61,7 +62,7 @@
   };
 
   function ListView (selector) {
-    View.call(this, selector);
+    View.call(this, selector); 
     this.selectedItemClassName = 'selected';
   }
 
@@ -85,6 +86,14 @@
 
     View.forEach(View.getElements(that.element, 'li'), function reset (el) {
       el.classList.remove(that.selectedItemClassName);
+    });
+  };
+
+  ListView.prototype.hideSelection = function () {
+    var that = this;
+
+    View.forEach(View.getElements(that.element, 'li'), function reset (el) {
+      View.hideElement(View.getElement(that.element, 'li.selected'));
     });
   };
 
@@ -191,6 +200,11 @@
     cancelButtonEl.addEventListener('click', cb);
   };
 
+  UserFormView.prototype.onDelete = function (cb) {
+    var deleteButtonEl = View.getElement(this.element, '.delete');
+    deleteButtonEl.addEventListener('click', cb);
+  };
+
   UserFormView.prototype.onClose = function (cb) {
     var closeButtonEl = View.getElement(this.element, '.close');
     closeButtonEl.addEventListener('click', cb);
@@ -203,21 +217,48 @@
   function UpdateUserFormView (selector) {
     UserFormView.call(this, selector);
   }
-
+ 
   UpdateUserFormView.prototype = Object.create(UserFormView.prototype);
   UpdateUserFormView.prototype.constructor = UpdateUserFormView;
 
   UpdateUserFormView.prototype.fill = function (data) {
     View.forEach(View.getElements(this.element, 'input'), function (el) {
-      el.value = data[el.id];
+      el.value = data[el.id]; 
     });
 
     View.getElement(this.element, 'select').value = data.type;
+  }; 
+
+  UpdateUserFormView.prototype.showSuccessMode = function (data) {
+    this.removeClass('error');
+    View.showElement(View.getElement(this.element, '.success-message'), 'block');
+    View.hideElement(View.getElement(this.element, 'button.submit'));
+    View.hideElement(View.getElement(this.element, 'button.cancel'));
+    View.hideElement(View.getElement(this.element, 'button.delete'));
+    View.showElement(View.getElement(this.element, 'button.close'), 'inline-block');
+  };
+
+  UpdateUserFormView.prototype.reset = function (data) {
+    var successMessageEl = View.getElement(this.element, '.success-message');
+    var submitButtonEl = View.getElement(this.element, 'button.submit');
+    var cancelButtonEl = View.getElement(this.element, 'button.cancel');
+    var deleteButtonEl = View.getElement(this.element, 'button.delete');
+    var closeButtonEl = View.getElement(this.element, 'button.close');
+    var inputFieldEls = View.getElements(this.element, 'input');
+
+    this.removeClass('error');
+    View.hideElement(successMessageEl);
+    View.showElement(submitButtonEl, 'inline-block');
+    View.showElement(cancelButtonEl, 'inline-block');
+    View.showElement(deleteButtonEl, 'inline-block');
+    View.hideElement(closeButtonEl);
+    View.forEach(inputFieldEls, View.clearElementValue);
   };
 
   function onNewUserSelection (e) {
     if (createUserFormView.isHidden()) {
       createUserFormView.show();
+      updateUserFormView.hide();
     } else {
       createUserFormView.reset();
     }
@@ -227,13 +268,15 @@
     newUserListView.updateSelection('type', userType);
     createUserFormView.updateUserTypeSelection(userType);
   }
-
+  
   function onCurrentUserSelection (e) {
     var targetUserID = e.target.dataset.id;
+    userIdNum = targetUserID;
     currentUserListView.updateSelection('id', targetUserID);
 
     if (updateUserFormView.isHidden()) {
       updateUserFormView.show();
+      createUserFormView.hide();
     } else {
       updateUserFormView.reset();
     }
@@ -252,6 +295,16 @@
     updateUserFormView.hide();
     updateUserFormView.reset();
     currentUserListView.clearSelection();
+  }
+
+  function deleteCurrentUserUpdate () {
+    updateUserFormView.hide();
+    updateUserFormView.reset();
+    currentUserListView.hideSelection();
+   
+    delete userCollection[userIdNum];
+    
+    targetUser = null;
   }
 
   function createUser (e) {
@@ -316,6 +369,7 @@
   createUserFormView.onSave(createUser);
   createUserFormView.onUserTypeChange(updateUserList);
   updateUserFormView.onCancel(cancelCurrentUserUpdate);
+  updateUserFormView.onDelete(deleteCurrentUserUpdate);
   updateUserFormView.onClose(cancelCurrentUserUpdate);
   updateUserFormView.onSave(updateUser);
 })();
