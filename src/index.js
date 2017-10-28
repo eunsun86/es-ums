@@ -10,7 +10,6 @@
   };
   var userCollection = [];
   var userId = 0;
-  var userIdNum = 0;
   var targetUser = null;
 
   function View (selector) {
@@ -89,12 +88,10 @@
     });
   };
 
-  ListView.prototype.hideSelection = function () {
+  ListView.prototype.deleteSelection = function () {
     var that = this;
 
-    View.forEach(View.getElements(that.element, 'li'), function reset (el) {
-      View.hideElement(View.getElement(that.element, 'li.selected'));
-    });
+    View.getElement(that.element, 'li.selected').remove();
   };
 
   ListView.prototype.onListItemClick = function (cb) {
@@ -230,29 +227,14 @@
   }; 
 
   UpdateUserFormView.prototype.showSuccessMode = function (data) {
-    this.removeClass('error');
-    View.showElement(View.getElement(this.element, '.success-message'), 'block');
-    View.hideElement(View.getElement(this.element, 'button.submit'));
-    View.hideElement(View.getElement(this.element, 'button.cancel'));
+    UserFormView.prototype.showSuccessMode.call(this);
     View.hideElement(View.getElement(this.element, 'button.delete'));
-    View.showElement(View.getElement(this.element, 'button.close'), 'inline-block');
   };
 
   UpdateUserFormView.prototype.reset = function (data) {
-    var successMessageEl = View.getElement(this.element, '.success-message');
-    var submitButtonEl = View.getElement(this.element, 'button.submit');
-    var cancelButtonEl = View.getElement(this.element, 'button.cancel');
+    UserFormView.prototype.reset.call(this);
     var deleteButtonEl = View.getElement(this.element, 'button.delete');
-    var closeButtonEl = View.getElement(this.element, 'button.close');
-    var inputFieldEls = View.getElements(this.element, 'input');
-
-    this.removeClass('error');
-    View.hideElement(successMessageEl);
-    View.showElement(submitButtonEl, 'inline-block');
-    View.showElement(cancelButtonEl, 'inline-block');
     View.showElement(deleteButtonEl, 'inline-block');
-    View.hideElement(closeButtonEl);
-    View.forEach(inputFieldEls, View.clearElementValue);
   };
 
   function onNewUserSelection (e) {
@@ -271,7 +253,6 @@
   
   function onCurrentUserSelection (e) {
     var targetUserID = e.target.dataset.id;
-    userIdNum = targetUserID;
     currentUserListView.updateSelection('id', targetUserID);
 
     if (updateUserFormView.isHidden()) {
@@ -300,10 +281,9 @@
   function deleteCurrentUserUpdate () {
     updateUserFormView.hide();
     updateUserFormView.reset();
-    currentUserListView.hideSelection();
+    currentUserListView.deleteSelection();
    
-    delete userCollection[userIdNum];
-    
+    delete userCollection[targetUser.id];
     targetUser = null;
   }
 
