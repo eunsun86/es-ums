@@ -45,8 +45,9 @@
     createUser: function () {
       var userData;
       var inspectionResult = this.createUserFormView.inspect();
-
-      if (inspectionResult.error) {
+      var userCollectionBoseResult = this.userCollectionModel.isBose();
+      
+      if (inspectionResult.error || userCollectionBoseResult) {
         this.createUserFormView.triggerError();
         return;
       }

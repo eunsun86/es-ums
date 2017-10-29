@@ -4,6 +4,13 @@ var userCollectionModel = (function () {
 
   return {
     selectedUser: null,
+    isBose: function () {
+      for (var i = 0; i < userCollection.length; i++) {
+        if(userCollection[i].type === 4) {
+          return 1;
+        }
+      }
+    },
     createUser: function (userData) {
       var user = {
         id: userIDCount
