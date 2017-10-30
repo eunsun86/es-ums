@@ -7,7 +7,7 @@ var userCollectionModel = (function () {
     isBose: function () {
       for (var i = 0; i < userCollection.length; i++) {
         if(userCollection[i].type === 4) {
-          return 1;
+          return true;
         }
       }
     },
