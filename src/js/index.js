@@ -11,6 +11,7 @@
     onNewUserSelection: function (data) {
       if (this.createUserFormView.isHidden()) {
         this.createUserFormView.show();
+        this.updateUserFormView.hide();
       } else {
         this.createUserFormView.reset();
       }
@@ -25,6 +26,7 @@
 
       if (this.updateUserFormView.isHidden()) {
         this.updateUserFormView.show();
+        this.createUserFormView.hide();
       } else {
         this.updateUserFormView.reset();
       }

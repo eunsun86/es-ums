@@ -28,10 +28,10 @@ var userCollectionModel = (function () {
     updateUser: function (userID, newUserData) {
       var targetUser = userCollection[userID];
 
-      for (var prop in newUserData) {
+      for (var prop in newUserData) { 
         if (newUserData.hasOwnProperty(prop)) {
           targetUser[prop] = newUserData[prop];
-        }
+        } 
       }
     }
   };
