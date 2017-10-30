@@ -51,6 +51,12 @@
       
       if (inspectionResult.error || userCollectionBoseResult) {
         this.createUserFormView.triggerError();
+        if (inspectionResult.error === 'belongto') {
+          setTimeout(function () {
+            alert('사용자의 소속 기관은 세글자 이상이어야 합니다.');
+          }, 0)
+        }
+        
         return;
       }
 

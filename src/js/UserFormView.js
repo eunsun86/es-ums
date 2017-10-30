@@ -20,10 +20,11 @@ UserFormView.prototype.inspect = function () {
     if (!el.value || el.value === ' ') {
       if(el.id !== 'belongto') {
         result.error = el.id;
+      } else if (el.id === 'belongto') {
+        result.fieldValues['belongto'] = ' ';
       }
     } else {
       if(el.id === 'belongto' && el.value.length < 3) {
-        alert('사용자의 소속 기관은 세글자 이상이어야 합니다.');
         result.error = el.id;
       }
 
