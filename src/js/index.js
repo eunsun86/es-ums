@@ -58,15 +58,15 @@
       this.createUserFormView.showSuccessMode();
     },
     updateUser: function () {
-      var inspectionResult = this.updateUserFormView.inpect();
+      var inspectionResult = this.updateUserFormView.inspect();
 
-      if (!inspectionResult.error) {
+      if (inspectionResult.error) {
         this.updateUserFormView.triggerError();
         return;
       }
 
       var newUserData = Object.assign({}, inspectionResult.fieldValues, {
-        type: updateUserFormView.getUserTypeFieldValue()
+        type: this.updateUserFormView.getUserTypeFieldValue()
       });
 
       this.userCollectionModel.updateUser(this.userCollectionModel.selectedUser.id, newUserData);
@@ -79,10 +79,10 @@
     init: function () {
       this.userCollectionModel = userCollectionModel;
 
-      this.newUserListView = ListView('.new-user-selection');
-      this.currentUserListView = CurrentUserListView('.existing-user-list');
-      this.createUserFormView = UserFormView('.user-form.create');
-      this.updateUserFormView = UpdateUserFormView('.user-form.update');
+      this.newUserListView = new ListView('.new-user-selection');
+      this.currentUserListView = new CurrentUserListView('.existing-user-list');
+      this.createUserFormView = new UserFormView('.user-form.create');
+      this.updateUserFormView = new UpdateUserFormView('.user-form.update');
 
       this.newUserListView.onListItemClick(this.onNewUserSelection.bind(this));
       this.currentUserListView.onListItemClick(this.onCurrentUserSelection.bind(this));
