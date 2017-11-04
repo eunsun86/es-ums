@@ -19,6 +19,9 @@
 
       this.newUserListView.updateSelection('type', userType);
       this.createUserFormView.updateUserTypeSelection(userType);
+
+      var history = this.router.routeMap['create'].path + '?createForm';
+      this.router.queryString(history);
     },
     onCurrentUserSelection: function (data) {
       this.currentUserListView.updateSelection('id', data.id);
@@ -79,6 +82,7 @@
     },
     onRouteChange: function (data) {
       this.router.set(data.route);
+      this.createUserFormView.hide();
     },
     onCreateRoute: function () {
       this.createPageView.show();
@@ -110,7 +114,7 @@
       this.updateUserFormView.onCancel(this.cancelCurrentUserUpdate.bind(this));
       this.updateUserFormView.onClose(this.cancelCurrentUserUpdate.bind(this));
       this.updateUserFormView.onSave(this.updateUser.bind(this));
-      this.navigationMenuView.onListItemClick(this.onRouteChange.bind(this));
+      this.navigationMenuView.onListItemClick(this.onRouteChange.bind(this)); 
 
       this.router = appRouter;
       this.router.on('create', this.onCreateRoute.bind(this));
@@ -118,6 +122,9 @@
 
       if (window.location.hash === '#/list') {
         this.router.set('list');
+      }
+      if (window.location.hash === '#/?createForm') {
+        this.createUserFormView.show();
       }
     }
   };

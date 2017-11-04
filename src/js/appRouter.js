@@ -25,6 +25,11 @@ var appRouter = {
 
     this.routeMap[routeName].handler();
   },
+  queryString: function (history) {
+    window.history.pushState({
+      name: 'create'
+    }, 'create', history);
+  },
   validate: function (routeName) {
     return !!this.routeMap[routeName];
   }
