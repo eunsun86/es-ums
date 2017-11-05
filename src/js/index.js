@@ -20,7 +20,7 @@
       this.newUserListView.updateSelection('type', userType);
       this.createUserFormView.updateUserTypeSelection(userType);
 
-      var history = this.router.routeMap['create'].path + '?createForm';
+      var history = this.router.routeMap['create'].path + '?userType=' + userType;
       this.router.queryString(history);
     },
     onCurrentUserSelection: function (data) {
@@ -123,8 +123,13 @@
       if (window.location.hash === '#/list') {
         this.router.set('list');
       }
-      if (window.location.hash === '#/?createForm') {
+
+      var hashNum = String(window.location.hash.substring(12,13));
+
+      if (window.location.hash === '#/?userType=' + hashNum ) {
         this.createUserFormView.show();
+        this.newUserListView.updateSelection('type', hashNum);
+        this.createUserFormView.updateUserTypeSelection(hashNum);
       }
     }
   };
