@@ -132,18 +132,13 @@
         this.createUserFormView.updateUserTypeSelection(hashNum);
       }
 
-      var that = this;
-      window.addEventListener ('hashchange', function () {
-        var hashNum2 = String(window.location.hash.substring(12,13));
-        
-        that.createUserFormView.show();
-        that.newUserListView.updateSelection('type', hashNum2);
-        that.createUserFormView.updateUserTypeSelection(hashNum2);
-      })
+      window.addEventListener('hashchange', function () {
+        hashNum = String(window.location.hash.substring(12,13));
 
-      
-
-      
+        this.createUserFormView.show();
+        this.newUserListView.updateSelection('type', hashNum);
+        this.createUserFormView.updateUserTypeSelection(hashNum);
+      }.bind(this));
     }
   };
 
