@@ -14,6 +14,7 @@ window.messenger = {};
     for (var i = 0; i < listeners.length; i++) {
       listeners[i](data);
     }
+    console.log(topics);
   }
 
   function subscribe (topic, cb) {
@@ -22,6 +23,12 @@ window.messenger = {};
     console.log('Registered.');
   }
 
+  function topicDelete (topic) {
+    delete topics[topic];
+    console.log('Delete');
+  }
+
   m.publish = publish;
   m.subscribe = subscribe;
+  m.topicDelete = topicDelete;
 })(window.messenger);
