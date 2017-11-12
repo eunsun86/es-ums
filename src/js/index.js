@@ -7,9 +7,12 @@
     4: '사장님'
   };
 
-  var USER_TYPE_CHANGE = 'USER_TYPE_CHANGE';
-  var LOGIN = 'LOGIN';
-  var LOGOUT = 'LOGOUT';
+  var USER_TYPE_CHANGE = 'USER_TYPE_CHANGE'
+  , LOGIN = 'LOGIN'
+  , LOGOUT = 'LOGOUT'
+  , PICTURE_FB_GET = 'PICTURE_FB_GET'
+  , NAME_FB_GET = 'NAME_FB_GET'
+  , FRIENDS_FB_GET = 'FRIENDS_FB_GET';
 
   var appController = {
     onNewUserSelection: function (data) {
@@ -100,6 +103,10 @@
       this.userListPageView.hide();
       this.createPageView.hide();
       this.navigationMenuView.hide();
+      if (this.photoView.element.children.length){
+        this.photoView.element.removeChild(this.photoView.element.childNodes[0]);
+        this.nameView.element.removeChild(this.nameView.element.childNodes[0]);
+      }
     },
     init: function () {
       var that = this;
@@ -113,6 +120,8 @@
       this.createUserFormView = new UserFormView('.user-form.create');
       this.updateUserFormView = new UpdateUserFormView('.user-form.update');
       this.navigationMenuView = new NavigationMenuView('#navigation-menu ul');
+      this.photoView = new View('#photo');
+      this.nameView = new View('#name');
 
       this.newUserListView.onListItemClick(this.onNewUserSelection.bind(this));
       this.currentUserListView.onListItemClick(this.onCurrentUserSelection.bind(this));
@@ -151,6 +160,26 @@
       });
 
       messenger.subscribe(USER_TYPE_CHANGE, this.updateUserList.bind(this));
+
+      messenger.subscribe(PICTURE_FB_GET, function (url) {
+        that.photoView.appendImgHtml(url);
+      });
+
+      messenger.subscribe(NAME_FB_GET, function (name) {
+        that.nameView.appendHtml(name);
+      });
+
+      messenger.subscribe(FRIENDS_FB_GET, function (response) {
+        var friends = response;
+        var userData2;
+        
+        for (var i = 0; i < friends.data.length; i++) {
+          userData2 = userCollectionModel.createUser(Object.assign({}, {type: 0}, {username: friends.data[i].name, nickname: friends.data[i].name},
+          ));
+
+          that.currentUserListView.addNewUser(userData2.id, userData2.username);
+        }
+      });
     }
   };
 

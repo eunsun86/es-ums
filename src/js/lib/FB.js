@@ -17,6 +17,30 @@ window.onlogin = function () {
     if (response.status === 'connected') {
       window.IS_LOGGEDIN = true;
       messenger.publish('LOGIN');
+      FB.api(
+        "/me?fields=picture.width(160).height(160).type(square) ",
+        function (response) {
+          if (response && !response.error) {
+            messenger.publish('PICTURE_FB_GET', response.picture.data.url);
+          }
+        }
+      );
+      FB.api(
+        "/me",
+        function (response) {
+          if (response && !response.error) {
+            messenger.publish('NAME_FB_GET', response.name);
+          }
+        }
+      );
+      FB.api(
+        "/me/friends",
+        function (response) {
+          if (response && !response.error) {
+            messenger.publish('FRIENDS_FB_GET', response);
+          }
+        }
+      );
     }
   });
 

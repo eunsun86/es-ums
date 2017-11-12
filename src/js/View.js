@@ -23,6 +23,14 @@ View.prototype.isHidden = function () {
   return !this.element.style.display || this.element.style.display === 'none';
 };
 
+View.prototype.appendImgHtml = function (url) {
+  this.element.innerHTML = "<img src="+url+">";
+};
+
+View.prototype.appendHtml = function (name) {
+  this.element.innerHTML = "<p>"+name+"</p>";
+};
+
 View.getElement = function (el, selector) {
   return el.querySelector(selector);
 };
