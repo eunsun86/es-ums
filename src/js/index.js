@@ -8,7 +8,7 @@
   };
 
   var USER_TYPE_CHANGE = 'USER_TYPE_CHANGE';
-  var NEW_USER_LIST = 'NEW_USER_LIST';
+  var NEW_USER_CREATION = 'NEW_USER_CREATION';
 
   var appController = {
     onNewUserSelection: function (data) {
@@ -87,14 +87,14 @@
       this.createPageView.show();
       this.userListPageView.hide();
       this.navigationMenuView.select('create');
-      messenger.subscribe(NEW_USER_LIST, this.createUser.bind(this));
+      messenger.subscribe(NEW_USER_CREATION, this.createUser.bind(this));
       messenger.subscribe(USER_TYPE_CHANGE, this.updateUserList.bind(this));
     },
     onListRoute: function () {
       this.userListPageView.show();
       this.createPageView.hide();
       this.navigationMenuView.select('list');
-      messenger.topicDelete(NEW_USER_LIST);
+      messenger.topicDelete(NEW_USER_CREATION);
       messenger.topicDelete(USER_TYPE_CHANGE);
     },
     init: function () {
@@ -113,7 +113,7 @@
       this.createUserFormView.onCancel(this.cancelNewUserCreation.bind(this));
       this.createUserFormView.onClose(this.cancelNewUserCreation.bind(this));
       this.createUserFormView.onSave(function () {
-        messenger.publish(NEW_USER_LIST);
+        messenger.publish(NEW_USER_CREATION);
       });
       this.createUserFormView.onUserTypeChange(function (userType) {
         messenger.publish(USER_TYPE_CHANGE, userType);
@@ -132,7 +132,7 @@
       }
 
       messenger.subscribe(USER_TYPE_CHANGE, this.updateUserList.bind(this));
-      messenger.subscribe(NEW_USER_LIST, this.createUser.bind(this));
+      messenger.subscribe(NEW_USER_CREATION, this.createUser.bind(this));
     }
   };
 

@@ -14,7 +14,6 @@ window.messenger = {};
     for (var i = 0; i < listeners.length; i++) {
       listeners[i](data);
     }
-    console.log(topics);
   }
 
   function subscribe (topic, cb) {
